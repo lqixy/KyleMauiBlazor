@@ -1,0 +1,40 @@
+﻿@inherits LayoutComponentBase
+
+<MApp>
+    <MErrorHandler ShowDetail="true">
+        
+        @*<MNavigationDrawer App @bind-Value="drawer">
+            <NavMenu />
+        </MNavigationDrawer>*@
+
+        @*<MAppBar App="true">
+            <MAppBarNavIcon @onclick="()=> drawer = !drawer"></MAppBarNavIcon>
+
+        </MAppBar>*@
+
+        <MMain>
+            @Body
+        </MMain>
+
+        <MBottomNavigation Grow App="true">
+
+            <MButton Href="/">
+                <span>任务</span>
+                <MIcon>mdi-calendar-text</MIcon>
+            </MButton>
+
+            <MButton Href="calendar">
+                <span>日历</span>
+                <MIcon>mdi-calendar-blank</MIcon>
+            </MButton>
+
+            <MButton>
+                <span>我的</span>
+                <MIcon>mdi-emoticon-happy-outline</MIcon>
+            </MButton>
+
+        </MBottomNavigation>
+
+    </MErrorHandler>
+</MApp>
+

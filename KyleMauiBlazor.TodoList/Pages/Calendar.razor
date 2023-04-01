@@ -1,0 +1,61 @@
+﻿@using KyleMauiBlazor.TodoList.Data
+
+@page "/calendar"
+
+@inject TodoItemService todoItemService
+
+<MRow>
+    <MDatePicker @bind-Value="SelectedDate"
+                 Locale="zh-CN"
+                 Events="_arrayEvents"
+                 EventColor="green lighten-1"
+                 ShowAdjacentMonths="true"
+                 FullWidth="true">
+
+    </MDatePicker>
+</MRow>
+<div>
+    <MList>
+        @foreach (var item in _thisList)
+        {
+            <MListItem Dense="true">
+
+                <span>
+                    <MCheckbox @bind-Value=@item.Finished></MCheckbox>
+                </span>
+
+                <MListItemContent Class="text-body">
+                    <MListItemTitle>@item.Content</MListItemTitle>
+                    <MListItemSubtitle>
+                        @item.Time
+
+                        <MIcon Small="true">@(!item.RemindTime.HasValue?"": "mdi-bell-outline")</MIcon>
+                        <MIcon Small="true">
+                            @(item.Repeat > Repeat.None?"mdi-repeat":"")
+                        </MIcon>
+
+                    </MListItemSubtitle>
+                </MListItemContent>
+
+                <MListItemAction>
+
+                    <MButton Icon="true" Color="blue lighten-3">
+                        <div @onclick="()=>item.IsMark=!item.IsMark">
+                            <MIcon>@(item.IsMark?"mdi-star": "mdi-star-outline") </MIcon>
+                        </div>
+                    </MButton>
+                    <MButton Icon="true" Color="blue darken-3">
+                        <MIcon>mdi-calendar-month</MIcon>
+                    </MButton>
+                    <MButton Icon="true" Color="red">
+                        <MIcon>mdi-trash-can-outline</MIcon>
+                    </MButton>
+                </MListItemAction>
+
+
+
+            </MListItem>
+        }
+    </MList>
+</div>
+

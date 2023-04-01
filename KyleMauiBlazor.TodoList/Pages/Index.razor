@@ -1,0 +1,96 @@
+﻿@using KyleMauiBlazor.TodoList.Data
+
+@page "/"
+
+@inject TodoItemService todoItemService
+@inject CategoryService categoryService
+<div>
+    <MContainer> 
+        <MRow Align="@AlignTypes.Center">
+            <MCol>
+                <MChipGroup Mandatory
+                            ActiveClass="primary--text">
+                    @foreach (var category in _thisCategories)
+                    {
+                        <MChip>@category.Title</MChip>
+                    }
+
+                </MChipGroup>
+            </MCol>
+            <MCol>
+
+                <MIcon>mdi-shape-plus</MIcon>
+            </MCol>
+        </MRow>
+    </MContainer>
+    <MRow>
+        <div style="height:calc(100vh - 112px );overflow: hidden; display:block;">
+            <MToolbar Dense="true">
+                <MTextField TValue="string"
+                            Placeholder="输入关键字"
+                            @bind-Value="Keyword">
+                    <PrependContent>
+                        <MIcon Small="true">fa fa-search</MIcon>
+                    </PrependContent>
+                </MTextField>
+            </MToolbar>
+
+            <MList @ref="_card"
+                   Class="rounded-4 mt-6" Style="height: calc(100vh - 196px ); overflow-y:auto;">
+                @foreach (var item in _todoList)
+                {
+                    <MListItem Dense="true" @onclick="()=>NavigateToDetails(item.Id)">
+
+                        <span>
+                            <MCheckbox @bind-Value=@item.Finished></MCheckbox>
+                        </span>
+
+                        <MListItemContent Class="text-body">
+                            <MListItemTitle>@item.Content</MListItemTitle>
+                            <MListItemSubtitle>
+                                @item.Time
+
+                                <MIcon Small="true">@(!item.RemindTime.HasValue ? "" : "mdi-bell-outline")</MIcon>
+                                <MIcon Small="true">
+                                    @(item.Repeat > Repeat.None ? "mdi-repeat" : "")
+                                </MIcon>
+
+                            </MListItemSubtitle>
+                        </MListItemContent>
+
+                        <MListItemAction>
+                            <MButton Icon="true" Color="blue lighten-3">
+                                <div @onclick="() => item.IsMark = !item.IsMark">
+                                    <MIcon>@(item.IsMark ? "mdi-star" : "mdi-star-outline") </MIcon>
+                                </div>
+                            </MButton>
+                            <MButton Icon="true" Color="blue darken-3">
+                                <MIcon>mdi-calendar-month</MIcon>
+                            </MButton>
+                            <MButton Icon="true" Color="red">
+                                <MIcon>mdi-trash-can-outline</MIcon>
+                            </MButton>
+                        </MListItemAction>
+                    </MListItem>
+                    <MDivider></MDivider>
+                }
+
+
+                <MInfiniteScroll HasMore="@_hasMore"
+                                 OnLoadMore="@TodoListLoadMore"
+                                 Parent="@_card.Ref">
+                </MInfiniteScroll>
+            </MList>
+        </div>
+    </MRow>
+</div>
+
+
+<MButton Small="true"  Fab="true" Right="true" Absolute="true"
+
+         Style="bottom:10px; z-index:7;"
+         >
+        <MIcon>mdi-plus</MIcon>
+    </MButton>
+
+  

@@ -1,0 +1,32 @@
+﻿ 
+<MListItem>
+    <MListItemAvatar>
+        <MIcon>@AvatarIcon</MIcon>
+    </MListItemAvatar>
+
+    <MListItemContent>
+
+    </MListItemContent>
+
+    <MListItemAction>
+        <MButton Icon="true">
+            <MIcon>mdi-right</MIcon>
+        </MButton>
+    </MListItemAction>
+</MListItem>
+
+
+
+@code{
+
+    [Parameter]
+    public string AvatarIcon { get; set; }
+
+    //[Parameter]
+    //public string ActionIcon { get; set; }
+
+    [Parameter]
+    public string Content { get; set; }
+     
+
+}

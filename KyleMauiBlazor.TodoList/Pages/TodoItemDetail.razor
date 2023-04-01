@@ -1,0 +1,178 @@
+﻿@using KyleMauiBlazor.TodoList.Data
+
+
+@page "/details"
+@page "/details/{Id:int}"
+
+@inject TodoItemService todoItemService
+
+<MToolbar>
+    <MSwitch @bind-Value="@TodoItem.Finished"
+             Label="标记已完成"
+             Color="primary"
+             HideDetails="true"></MSwitch>
+    <MSpacer></MSpacer>
+    <MButton Icon="true">
+        <MIcon>mdi-delete-outline</MIcon>
+    </MButton>
+
+    <MButton Icon="true" OnClick="()=>TodoItem.IsMark = !TodoItem.IsMark">
+        <MIcon Color="orange">
+            @(TodoItem.IsMark?"mdi-heart":"mdi-heart-outline")
+        </MIcon>
+    </MButton>
+
+    <MButton Icon="true" OnClick="()=>NavigateToIndex()">
+        <MIcon>mdi-close</MIcon>
+    </MButton>
+
+</MToolbar> 
+    <div >
+        <MContainer Fluid="true">
+            <MRow Dense="true" Align="AlignTypes.Center" Justify="JustifyTypes.Center"> 
+                    <MCard>
+                        <MTextarea @bind-Value="@TodoItem.Content" Disabled="TodoItem.Finished">
+
+                        </MTextarea>
+                    </MCard>
+
+                    <MCard>
+                        <MList>
+                            <MListItem>
+                                <MListItemAvatar>
+                                    <MIcon>mdi-calendar-text-outline</MIcon>
+                                </MListItemAvatar>
+
+                                <MListItemContent>
+                                    <MMenu @bind-Value="_deadlineMenu"
+                                           CloseOnContentClick="false"
+                                           Transition="scale-transition">
+                                        <ActivatorContent>
+                                            <MTextField @bind-Value="TodoItem.Deadline"
+                                                        Disabled="TodoItem.Finished"
+                                                        Label="截止日期"
+                                                        Readonly="true"
+                                                        @attributes="context.Attrs"></MTextField>
+                                        </ActivatorContent>
+                                        <ChildContent>
+                                            <MDatePicker @bind-Value="TodoItem.Deadline"
+                                                         OnInput="()=>_deadlineMenu=false"></MDatePicker>
+                                        </ChildContent>
+                                    </MMenu>
+                                </MListItemContent>
+                            </MListItem>
+
+                            <MListItem>
+                                <MListItemAvatar>
+                                    <MIcon>mdi-timer-outline</MIcon>
+                                </MListItemAvatar>
+
+                                <MListItemContent>
+                                    <MMenu @bind-Value="_timeMenu"
+                                           CloseOnContentClick="false"
+                                           Transition="scale-transition">
+                                        <ActivatorContent>
+                                            <MTextField @bind-Value="TodoItem.Time"
+                                                        Disabled="TodoItem.Finished"
+                                                        Label="时间"
+                                                        Readonly="true"
+                                                        @attributes="context.Attrs"></MTextField>
+                                        </ActivatorContent>
+                                        <ChildContent>
+                                            <MTimePicker @bind-Value="TodoItem.Time"
+                                                         Format="TimeFormat.Hr24"
+                                                         OnChange="()=>_timeMenu=false"></MTimePicker>
+                                        </ChildContent>
+                                    </MMenu>
+                                </MListItemContent>
+
+                            </MListItem>
+
+                            <MListItem>
+                                <MListItemAvatar>
+                                    <MIcon>mdi-bell-outline</MIcon>
+                                </MListItemAvatar>
+
+                                <MListItemContent>
+                                    <MMenu @bind-Value="_remindTimeMenu"
+                                           CloseOnContentClick="false"
+                                           Transition="scale-transition">
+                                        <ActivatorContent>
+                                            <MTextField @bind-Value="TodoItem.RemindTime"
+                                                        Label="提醒时间"
+                                                        Disabled="TodoItem.Finished"
+                                                        Readonly="true"
+                                                        @attributes="context.Attrs"></MTextField>
+                                        </ActivatorContent>
+                                        <ChildContent>
+                                            <MTimePicker @bind-Value="TodoItem.RemindTime"
+                                                         Format="TimeFormat.Hr24"
+                                                         OnChange="()=>_remindTimeMenu=false"></MTimePicker>
+                                        </ChildContent>
+                                    </MMenu>
+                                </MListItemContent>
+
+                            </MListItem>
+
+                            <MListItem>
+                                <MListItemAvatar>
+                                    <MIcon>mdi-repeat</MIcon>
+                                </MListItemAvatar>
+
+                                <MListItemContent>
+                                    <MSelect @bind-Value="TodoItem.Repeat"
+                                             TItem="SelectData"
+                                             Label="重复"
+                                             Disabled="TodoItem.Finished"
+                                             TValue="Repeat"
+                                             TItemValue="Repeat"
+                                             Items="_selectDatas"
+                                             ItemText="i=>i.Label"
+                                             ItemValue="i=>i.Value">
+
+                                    </MSelect>
+                                </MListItemContent>
+
+                            </MListItem>
+                        </MList>
+                    </MCard>
+
+                    <MCard>
+
+                        <MList>
+                            <MListItem>
+
+                                <MListItemAvatar>
+                                    <MIcon>mdi-file-document-outline</MIcon>
+                                </MListItemAvatar>
+
+                                <MListItemContent> 
+                                    <MTextField @bind-Value="TodoItem.Remark"  Clearable="true"
+                                                Disabled="TodoItem.Finished"
+                                                Label="备注"></MTextField>
+                                </MListItemContent>
+                                 
+
+                            </MListItem>
+
+                            <MListItem>
+
+                                <MListItemAvatar>
+                                    <MIcon>mdi-attachment</MIcon>
+                                </MListItemAvatar>
+
+                                <MListItemContent>
+                                     <MFileInput TValue="IBrowserFile"
+                                                 PrependIcon=""
+                                                 ></MFileInput>
+                                </MListItemContent>
+                                 
+                            </MListItem>
+                        </MList>
+
+                    </MCard>
+                 
+            </MRow>
+        </MContainer>
+    </div> 
+
